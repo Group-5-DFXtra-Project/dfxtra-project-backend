@@ -52,7 +52,7 @@ attacks on the hashed passwords.*/
 //We also need to add the router.post route for sign in to our auths.js routes
 export const signin = async (req, res, next) => {
     try {
-        const user = await User.findOne({ username: req.body.username });
+        const user = await User.findOne({ email: req.body.email });
 
         if (!user) return next(handleError(404, "User not found"));
 
