@@ -1,4 +1,5 @@
 import User from '../models/User.js';
+import ProfileInfo from '../models/ProfileInfo.js'
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { handleError } from '../error.js';
@@ -21,7 +22,13 @@ export const signup = async (req, res, next) => {
         const hash = bcrypt.hashSync(password, salt);
         const newUser = new User({ ...req.body, password: hash });
 
-        await newUser.save();
+        const newUser1 = await newUser.save();
+        
+
+        const newProfileInfo = new ProfileInfo({ user: newUser1._id });
+        await newProfileInfo.save()
+        
+        
 
         // We take the id for the user and have it as our token. We specify the token id in our .env file.
         //Below that we destructure password so as to remove it from json display, just leaving othersData.

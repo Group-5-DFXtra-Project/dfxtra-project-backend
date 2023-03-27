@@ -9,10 +9,12 @@ const ProfileInfoSchema = new mongoose.Schema({
     certifications: {
         certificationName: {
             type: String,
-            required: true,
+            
         },
         certificationImage: {
             type: String,
         },
     }
 });
+
+export default mongoose.model("ProfileInfo", ProfileInfoSchema);
