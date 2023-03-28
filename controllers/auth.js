@@ -67,12 +67,12 @@ export const signin = async (req, res, next) => {
 
         if (!isCorrect) return next(handleError(400, 'Wrong password'));
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT);
-        const { password: userPassword, ...othersData } = user._doc;
+        const token = jwt.sign({ id: user._id }, process.env.JWT, {expiresIn: "1h"});
+        console.log("tokeeen",token);
 
-        res.cookie("access_token", token, { httpOnly: true })
+        res
             .status(200)
-            .json(othersData);
+            .json({token});
     } catch (err) {
         next(err);
     }
