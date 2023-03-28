@@ -7,12 +7,12 @@ const ProfileInfoSchema = new mongoose.Schema({
 		required: true,
 	},
 	profileHeader: {
-		displayName: String,
-		tagLine: String,
-		overview: String,
-		profilePicture: String,
-		githubLink: String,
-		linkedinLink: String,
+		displayName: { type: String, default: `` },
+		tagLine: { type: String, default: `` },
+		overview: { type: String, default: `` },
+		profilePicture: { type: String, default: `` },
+		githubLink: { type: String, default: `` },
+		linkedinLink: { type: String, default: `` },
 	},
 	experience: [
 		{
