@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import userRoutes from './routes/users.js';
 import authRoutes from './routes/auths.js';
+import profileRoutes from './routes/profileInfoRoute.js';
 
 
 const app = express();
@@ -25,6 +26,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/profile", profileRoutes);
 
 
 

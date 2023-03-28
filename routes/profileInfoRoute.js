@@ -1,12 +1,14 @@
 import express from 'express';
-import { getProfile } from '../controllers/auth.js';
-import {verifyToken} from '../middlewares/authJwt.js'
+import { getProfileInfo } from '../controllers/user.js';
+import { verifyToken } from '../middlewares/authJwt.js'
+import { addCertification } from '../controllers/profileinfo.js';
 
 
 const router = express.Router();
 
 
-router.get('/profile', verifyToken, getProfile);
+router.get('/', verifyToken, getProfileInfo);
+router.put('/certications', verifyToken, addCertification);
 
 
 export default router;
