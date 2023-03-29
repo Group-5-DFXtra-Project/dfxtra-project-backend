@@ -38,10 +38,10 @@ const ProfileInfoSchema = new mongoose.Schema({
 	],
 	qualifications: [
 		{
-			institutionName: String,
-			institutionImage: String,
-			educationLevel: String,
-			subject: String,
+			qualName: String,
+			qualImage: String,
+			qualLevel: String,
+			qualSubject: String,
 			grade: String,
 			description: String,
 			startDate: Date,
