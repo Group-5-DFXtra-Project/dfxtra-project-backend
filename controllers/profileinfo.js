@@ -3,7 +3,7 @@ import ProfileInfo from '../models/ProfileInfo.js';
 export const addCertification = async (req, res, next) => {
 	try {
 		// get info from requests
-		const certification = req.body.content;
+		const certification = req.body;
 		const userId = req.userId;
 
 		// check the user is updating the right profile
@@ -12,7 +12,7 @@ export const addCertification = async (req, res, next) => {
 			return res.status(404).json({ message: 'user not found!' });
 		}
 		// add new certification to the profile
-		profileInfo.certifications.push({ certName: certification });
+		profileInfo.certifications.push(certification);
 		await profileInfo.save();
 
 		// send success message
