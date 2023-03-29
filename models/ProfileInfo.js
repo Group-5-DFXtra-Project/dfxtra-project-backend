@@ -19,8 +19,8 @@ const ProfileInfoSchema = new mongoose.Schema({
 			employerName: String,
 			employerImage: String,
 			position: String,
-			startDate: Date,
-			endDate: Date,
+			startDate: String,
+			endDate: String,
 			description: String,
 			skills: String,
 			reference: {
