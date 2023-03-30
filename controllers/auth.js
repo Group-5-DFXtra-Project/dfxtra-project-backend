@@ -12,8 +12,8 @@ export const signup = async (req, res, next) => {
 		const { email, password } = req.body;
 
 		if (!email || !password) {
-      		return res.status(400).json({ message: 'Missing required fields' });
-    	}
+			return res.status(400).json({ message: 'Missing required fields' });
+		}
 
 		// Check if a user with the same email already exists
 		const existingUser = await User.findOne({ email });
@@ -62,11 +62,11 @@ export const signin = async (req, res, next) => {
 	try {
 		const user = await User.findOne({ email: req.body.email });
 
-		if (!user) return next(handleError(404, 'User not found'));
+		if (!user) return res.status(404).json({ message: 'User not found' });
 
 		const isCorrect = await bcrypt.compare(req.body.password, user.password);
 
-		if (!isCorrect) return next(handleError(400, 'Wrong password'));
+		if (!isCorrect) return res.status(400).json({ message: 'Wrong password' });
 
 		const token = jwt.sign({ id: user._id }, process.env.JWT);
 

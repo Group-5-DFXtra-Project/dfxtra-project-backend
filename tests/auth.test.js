@@ -16,15 +16,15 @@ describe('Auth tests', () => {
     });
 
     describe('POST /api/auth/signup', () => {
-        
+
 
         it('should successfully register a new user', async () => {
             const testUser = {
-                 username: 'bob',
-                 email: 'bob@bob.com',
-                 password: 'password'
+                username: 'bob',
+                email: 'bob@bob.com',
+                password: 'password'
             };
-            
+
             const res = await chai
                 .request(app)
                 .post('/api/auth/signup')
@@ -46,10 +46,10 @@ describe('Auth tests', () => {
                 .request(app)
                 .post('/api/auth/signup')
                 .send(testUser);
-            
+
             const userInDb = await User.findOne({ email: testUser.email });
             const profileInDb = await ProfileInfo.findOne({ user: userInDb._id });
-           
+
             expect(userInDb).to.not.be.null;
             expect(profileInDb).to.not.be.null;
         });
@@ -62,9 +62,9 @@ describe('Auth tests', () => {
             };
 
             await chai
-            .request(app)
-            .post('/api/auth/signup')
-            .send(testUser);
+                .request(app)
+                .post('/api/auth/signup')
+                .send(testUser);
 
             const res = await chai
                 .request(app)
@@ -74,14 +74,14 @@ describe('Auth tests', () => {
             expect(res).to.have.status(400);
             expect(res.body).to.have.property('message', 'Email already in use');
         });
-        
+
         it('should not register a user without an email', async () => {
             const testUser = {
                 username: 'bob',
                 password: 'password'
-             };
+            };
 
-             const res = await chai
+            const res = await chai
                 .request(app)
                 .post('/api/auth/signup')
                 .send(testUser);
@@ -106,7 +106,7 @@ describe('Auth tests', () => {
         });
 
 
-        
+
     });
 
     describe('POST /api/auth/signin', () => {
@@ -131,8 +131,77 @@ describe('Auth tests', () => {
                 });
 
             expect(res).to.have.status(200);
+        });
+
+        it('should not log in a user who does not have an account', async () => {
+            const testUser = {
+                username: 'noaccount',
+                email: 'noaccount@noaccount.com',
+                password: 'noaccount'
+            };
+
+
+            const res = await chai
+                .request(app)
+                .post('/api/auth/signin')
+                .send({
+                    email: testUser.email,
+                    password: testUser.password
+                });
+
+            expect(res).to.have.status(404);
+            expect(res.body).to.have.property('message', 'User not found');
+
+        });
+
+
+        it('should successfully produce a token on sign in', async () => {
+            const testUser = {
+                username: 'bob',
+                email: 'bob@bob.com',
+                password: 'password'
+            };
+
+            await chai
+                .request(app)
+                .post('/api/auth/signup')
+                .send(testUser);
+
+            const res = await chai
+                .request(app)
+                .post('/api/auth/signin')
+                .send({
+                    email: testUser.email,
+                    password: testUser.password
+                });
+
             expect(res.body).to.have.property('token');
         });
-    });
 
+        it('should not login a valid user with an invalid password', async () => {
+            const testUser = {
+                username: 'bob',
+                email: 'bob@bob.com',
+                password: 'right'
+            };
+
+            await chai
+                .request(app)
+                .post('/api/auth/signup')
+                .send(testUser);
+
+            const res = await chai
+                .request(app)
+                .post('/api/auth/signin')
+                .send({
+                    email: testUser.email,
+                    password: 'wrong'
+                });
+
+            expect(res).to.have.status(400);
+            console.log(res);
+            expect(res.body).to.have.property('message', 'Wrong password');
+        });
+
+    });
 });
